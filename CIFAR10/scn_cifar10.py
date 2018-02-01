@@ -202,7 +202,7 @@ for i in range(300000):  # Run 300 epochs
             print("Saved checkpoint for step %d and training accuracy %g." % (i, train_accuracy))
 
     train_step.run(session=sess,
-                   feed_dict={x: batch_i_x, y_: batch_i_y, learning_rate: 0.003 * np.exp(-0.01*(i/1000+1)), keep_prob2: 0.9,
+                   feed_dict={x: batch_i_x, y_: batch_i_y, learning_rate: 1e-5, keep_prob2: 0.9,#learning_rate: 0.0001 * np.exp(-0.01*(i/1000+1)), keep_prob2: 0.9,
                               keep_prob3: 0.8, keep_prob4: 0.7, keep_prob5: 0.6, keep_prob6: 0.5})
     #train_step.run(session=sess,
     #              feed_dict = {x: batch_i_x, y_: batch_i_y, keep_prob2: 0.9, keep_prob3: 0.8, keep_prob4: 0.7, keep_prob5: 0.6, keep_prob6: 0.5})
@@ -219,7 +219,12 @@ for i in range(len(test_x)/_BATCH_SIZE):
 # Test accuracy computation
 test_accuracy = test_correct_pred.mean() * 100
 correct_num = test_correct_pred.sum()
-print("Accuracy on Test Set: {0:.2f}% ({1} / {2})".format(test_accuracy, correct_num, len(test_x)))
+test_acc_str = "Accuracy on Test Set: {0:.2f}% ({1} / {2}) \n".format(test_accuracy, correct_num, len(test_x))
+print(test_acc_str)
 #print("test accuracy %g" % accuracy.eval(session=sess,
 #                                         feed_dict={x: test_x, y_: test_y, keep_prob2: 1.0, keep_prob3: 1.0,
 #                                                    keep_prob4: 1.0, keep_prob5: 1.0, keep_prob6: 1.0}))
+
+f = open("test_accuracy.txt", "w")
+f.write(test_acc_str)
+f.close()
