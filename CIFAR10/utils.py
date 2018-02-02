@@ -2,7 +2,6 @@ import numpy as np
 import tensorflow as tf
 from numpy import *
 
-
 def _zca(X, U_matrix=None, S_matrix=None, mu=None, flag='train', alpha=1e-5):
     """
     preprocess image dataset by zca
@@ -53,4 +52,16 @@ def _leakyrelu(x, alpha=0., max_value=None):
     x =x - alpha * negative_part
     return x
 
+def weight_variable(shape):
+    initial = tf.random_normal(shape, dtype=tf.float32, stddev=0.05)
+    return tf.Variable(initial)
 
+def bias_variable(shape):
+    initial = tf.constant(0, dtype=tf.float32, shape=shape)
+    return tf.Variable(initial)
+
+def conv2d(x, W):
+    return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
+
+def max_pool_2x2(x):
+    return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
