@@ -11,7 +11,6 @@ import pdb
 import tensorflow as tf
 import numpy as np
 from data import get_data_set
-#from scipy import ndimage
 from tensorflow.examples.tutorials.mnist import input_data
 from tensorflow.contrib.learn.python.learn.datasets.mnist import DataSet
 import utils as utl
@@ -205,7 +204,7 @@ for epoch in range(_EPOCH_NUM):
             train_accuracy = accuracy.eval(session=sess,
                                            feed_dict={x: batch_x, y_: batch_y, keep_prob2: 1.0, keep_prob3: 1.0,
                                                       keep_prob4: 1.0, keep_prob5: 1.0, keep_prob6: 1.0})
-            print("step %d, training accuracy %g" % (step, train_accuracy))
+            print("epoch %d, step %d, training accuracy %g" % (epoch, step, train_accuracy))
 
         train_step.run(session=sess,
                        feed_dict={x: batch_x, y_: batch_y, learning_rate: 1e-5, keep_prob2: 0.9,#learning_rate: 0.0001 * np.exp(-0.01*(i/1000+1)), keep_prob2: 0.9,
