@@ -1,1 +1,1 @@
-Accuracy on Test Set: 75.10% (7510 / 10000) 
+Accuracy on Test Set: 71.15% (7115 / 10000) 
