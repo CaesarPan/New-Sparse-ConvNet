@@ -11,7 +11,6 @@ import pdb
 import tensorflow as tf
 import numpy as np
 from data import get_data_set
-#from scipy import ndimage
 from tensorflow.examples.tutorials.mnist import input_data
 from tensorflow.contrib.learn.python.learn.datasets.mnist import DataSet
 import utils as utl
@@ -188,6 +187,8 @@ sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 
 for epoch in range(_EPOCH_NUM):
+    epoch_num = epoch + 1				# The actual epoch starts from 1    
+
     # Shuffle training data
     print("Shuffling training data...")
     train_set = np.concatenate((train_x, train_y), axis=1)
@@ -202,15 +203,15 @@ for epoch in range(_EPOCH_NUM):
             train_accuracy = accuracy.eval(session=sess,
                                            feed_dict={x: batch_x, y_: batch_y, keep_prob2: 1.0, keep_prob3: 1.0,
                                                       keep_prob4: 1.0, keep_prob5: 1.0, keep_prob6: 1.0})
-            print("step %d, training accuracy %g" % (step, train_accuracy))
+            print("epoch %d, step %d, training accuracy %g" % (epoch_num, step, train_accuracy))
 
         train_step.run(session=sess,
                        feed_dict={x: batch_x, y_: batch_y, learning_rate: 1e-5*np.exp(-0.01*epoch), keep_prob2: 0.9,#learning_rate: 0.0001 * np.exp(-0.01*(i/1000+1)), keep_prob2: 0.9,
                                   keep_prob3: 0.8, keep_prob4: 0.7, keep_prob5: 0.6, keep_prob6: 0.5})
 
-    if epoch >= (_EPOCH_NUM-10):           # Only save models for the last 10 epochs
-        saver.save(sess, save_path=_MODEL_SAVE_PATH, global_step=epoch)
-        print("Saved checkpoint for epoch %d and training accuracy %g." % (epoch, train_accuracy))
+    if epoch_num >= (_EPOCH_NUM-10):           # Only save models for the last 10 epochs
+        saver.save(sess, save_path=_MODEL_SAVE_PATH, global_step=epoch_num)
+        print("Saved checkpoint for epoch %d and training accuracy %g." % (epoch_num, train_accuracy))
 
 
         #train_step.run(session=sess,
