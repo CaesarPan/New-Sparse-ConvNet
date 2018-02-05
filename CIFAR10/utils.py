@@ -52,13 +52,13 @@ def _leakyrelu(x, alpha=0., max_value=None):
     x =x - alpha * negative_part
     return x
 
-def weight_variable(shape):
+def weight_variable(shape, name=None):
     initial = tf.random_normal(shape, dtype=tf.float32, stddev=0.05)
-    return tf.Variable(initial)
+    return tf.Variable(initial, name=name)
 
-def bias_variable(shape):
+def bias_variable(shape, name=None):
     initial = tf.constant(0, dtype=tf.float32, shape=shape)
-    return tf.Variable(initial)
+    return tf.Variable(initial, name=name)
 
 def conv2d(x, W):
     return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
