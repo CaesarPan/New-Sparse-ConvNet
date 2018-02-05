@@ -172,9 +172,9 @@ l2_loss = tf.add_n([tf.nn.l2_loss(v) for v in vars if "b" not in v.name]) * _WEI
 loss = cross_entropy + l2_loss
 
 ## Training step configuration
-train_step = tf.train.AdamOptimizer(1e-4).minimize(loss)
-#learning_rate = tf.placeholder(tf.float32, shape=[])
-#train_step = tf.train.MomentumOptimizer(learning_rate=learning_rate, momentum=0.99, use_nesterov=True).minimize(loss)    # lr = 0.003*exp(-0.01*epoch)
+#train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+learning_rate = tf.placeholder(tf.float32, shape=[])
+train_step = tf.train.MomentumOptimizer(learning_rate=learning_rate, momentum=0.99, use_nesterov=True).minimize(loss)    # lr = 0.003*exp(-0.01*epoch)
 
 # Accuracy definition
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
@@ -196,12 +196,9 @@ for epoch in range(_EPOCH_NUM):
     train_x = train_set[:, :3072]
     train_y = train_set[:, 3072:]
     print("Shuffling finished.")
-
     for step in range(train_x.shape[0]/_BATCH_SIZE):
         batch_x = train_x[step*_BATCH_SIZE:(step+1)*_BATCH_SIZE-1]
         batch_y = train_y[step*_BATCH_SIZE:(step+1)*_BATCH_SIZE-1]
-        #batch_x = train_x[(step*_BATCH_SIZE)%train_x.shape[0]:((step+1)*_BATCH_SIZE-1)%train_x.shape[0]]
-        #batch_y = train_y[(step*_BATCH_SIZE)%train_x.shape[0]:((step+1)*_BATCH_SIZE-1)%train_x.shape[0]]
         if step % 100 == 0:
             train_accuracy = accuracy.eval(session=sess,
                                            feed_dict={x: batch_x, y_: batch_y, keep_prob2: 1.0, keep_prob3: 1.0,
@@ -209,17 +206,20 @@ for epoch in range(_EPOCH_NUM):
             print("epoch %d, step %d, training accuracy %g" % (epoch_num, step, train_accuracy))
 
         train_step.run(session=sess,
-                       feed_dict = {x: batch_x, y_: batch_y, keep_prob2: 0.9, keep_prob3: 0.8, keep_prob4: 0.7, keep_prob5: 0.6, keep_prob6: 0.5})
-        # train_step.run(session=sess,
-        #                feed_dict={x: batch_x, y_: batch_y, learning_rate: 1e-5, keep_prob2: 0.9,#learning_rate: 0.0001 * np.exp(-0.01*(i/1000+1)), keep_prob2: 0.9,
-        #                           keep_prob3: 0.8, keep_prob4: 0.7, keep_prob5: 0.6, keep_prob6: 0.5})
+<<<<<<< HEAD
+                       feed_dict={x: batch_x, y_: batch_y, learning_rate: 1e-5*np.exp(-0.01*epoch), keep_prob2: 0.9,#learning_rate: 0.0001 * np.exp(-0.01*(i/1000+1)), keep_prob2: 0.9,
+=======
+                       feed_dict={x: batch_x, y_: batch_y, learning_rate: 1e-6*np.exp(-0.01*epoch_num), keep_prob2: 0.9,#learning_rate: 0.0001 * np.exp(-0.01*(i/1000+1)), keep_prob2: 0.9,
+>>>>>>> 515c9690e2b10523122de2eeb9b19129b29f0674
+                                  keep_prob3: 0.8, keep_prob4: 0.7, keep_prob5: 0.6, keep_prob6: 0.5})
 
     if epoch_num >= (_EPOCH_NUM-10):           # Only save models for the last 10 epochs
         saver.save(sess, save_path=_MODEL_SAVE_PATH, global_step=epoch_num)
         print("Saved checkpoint for epoch %d and training accuracy %g." % (epoch_num, train_accuracy))
 
 
-
+        #train_step.run(session=sess,
+        #              feed_dict = {x: batch_i_x, y_: batch_i_y, keep_prob2: 0.9, keep_prob3: 0.8, keep_prob4: 0.7, keep_prob5: 0.6, keep_prob6: 0.5})
 print("Training finished.")
 
 test_correct_pred = np.zeros(shape=len(test_x), dtype=np.int)
