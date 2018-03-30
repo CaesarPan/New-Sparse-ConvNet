@@ -116,7 +116,7 @@ for epoch in range(_EPOCH_NUM):
     test_correct_pred = np.equal(np.argmax(test_prediction, 1), np.argmax(test_y, 1))
     test_accuracy = test_correct_pred.mean() * 100
     correct_num = test_correct_pred.sum()
-    test_acc_str = "Epoch {0}. Accuracy on Test Set: {1:.2f}% ({2} / {3}) \n".format(epoch, test_accuracy, correct_num, len(test_x))
+    test_acc_str = "Epoch {0}. Accuracy on Test Set: {1:.2f}% ({2} / {3}) \n".format(epoch_num, test_accuracy, correct_num, len(test_x))
     print(test_acc_str)
 
 print("Training finished.")
@@ -132,8 +132,7 @@ for i in range(len(test_x) / _BATCH_SIZE):
 test_correct_pred = np.equal(np.argmax(test_prediction, 1), np.argmax(test_y, 1))
 test_accuracy = test_correct_pred.mean() * 100
 correct_num = test_correct_pred.sum()
-test_acc_str = "Epoch {0}. Accuracy on Test Set: {1:.2f}% ({2} / {3}) \n".format(epoch, test_accuracy, correct_num,
-                                                                                 len(test_x))
+test_acc_str = "Accuracy on Test Set: {1:.2f}% ({2} / {3}) \n".format(test_accuracy, correct_num, len(test_x))
 print(test_acc_str)
 #lprint("test accuracy %g" % accuracy.eval(session=sess,
 #                                         feed_dict={x: test_x, y_: test_y, keep_prob2: 1.0, keep_prob3: 1.0,
